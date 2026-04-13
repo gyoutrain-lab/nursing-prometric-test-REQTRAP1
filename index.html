@@ -23,6 +23,7 @@
         .fail-marker { color: #d00; font-weight: bold; text-transform: uppercase; }
         .pass-marker { color: #008000; font-weight: bold; }
         .rationale { font-size: 0.85rem; background: #f0f0f0; padding: 10px; margin-top: 5px; border-left: 3px solid var(--crimson); }
+        .footer-note { text-align: center; color: var(--gold); margin-top: 20px; font-size: 0.8rem; border-top: 1px dashed var(--gold); padding-top: 10px; }
     </style>
 </head>
 <body>
@@ -39,325 +40,13 @@
     </div>
 
     <div id="quiz-mount"></div>
-    <button class="btn-submit" onclick="analyzePerformance()">PROCESS TRANSCRIPT</button>
-</div>
-
-<div id="transcript" class="wrapper">
-    <h2 style="text-align:center;">INSTRUCTOR ANALYSIS REPORT</h2>
-    <div id="meta-data"></div>
-    <hr>
-    <div id="analysis-results"></div>
-</div>
-
-<script>
-const questions = [
-    {
-        v: "A post-operative patient suddenly complains of shortness of breath. The nurse notes the patient is pale and using accessory muscles.",
-        q: "Which action is the priority to avoid the 'Delay Trap'?",
-        o: ["Apply oxygen via non-rebreather mask immediately", "Perform a comprehensive 12-lead ECG", "Reassess lung sounds in 15 minutes", "Document the respiratory rate in the electronic record"],
-        a: 0, r: "Filter: Act before documenting. Oxygen is nurse-initiated and addresses stability first."
-    },
-    {
-        v: "A patient with a head injury has a Glasgow Coma Scale (GCS) score that was 14 and is now 11.",
-        q: "What is the correct 'Safety Filter' response?",
-        o: ["Notify the rapid response team immediately", "Repeat the GCS in one hour to confirm the trend", "Check the patient's pupils and document findings", "Review the patient's previous neurological baseline"],
-        a: 0, r: "Filter: Acute neuro change = escalate. Avoid reassessment loops (Delay Trap)."
-    },
-    {
-        v: "A 4-year-old child with a femoral fracture is found attempting to climb out of bed.",
-        q: "To prevent an immediate fall, which action must be taken?",
-        o: ["Physically assist the child back to bed", "Provide a detailed teaching session on bed safety", "Calculate the Humpty Dumpty Fall Risk score", "Ask the mother to watch the child while the nurse gets a bed alarm"],
-        a: 0, r: "Filter: Prevent fall immediately. Teaching/Risk scoring (Delay Trap) does not stop the fall."
-    },
-    {
-        v: "A patient receiving an IV antibiotic develops a rash, wheezing, and hypotension.",
-        q: "Which 'Authority Trap' distractor must the nurse avoid?",
-        o: ["Stopping the infusion immediately", "Calling the physician to ask for an order to stop the med", "Calculating the exact infusion volume remaining", "Reassuring the patient that the rash is common"],
-        a: 0, r: "Filter: Hold unsafe meds, don't wait. Calling the doctor before stopping is an Authority Trap."
-    },
-    {
-        v: "The nurse enters a room and finds a patient unresponsive with no palpable pulse.",
-        q: "Which step is the first 'Safe Step' in the emergency response?",
-        o: ["Activate the emergency response system and start CPR", "Look for the patient's DNR status in the paper chart", "Document the time of discovery before acting", "Wait for the code team to arrive for a diagnosis"],
-        a: 0, r: "Filter: First safe step counts. Documentation or waiting (Freezing Trap) is unsafe."
-    },
-    {
-        v: "A patient with deep vein thrombosis (DVT) is scheduled for ambulation but complains of sudden sharp chest pain.",
-        q: "What is the safest nurse-initiated action?",
-        o: ["Place the patient on absolute bed rest and apply O2", "Check the pedal pulses and document the pain level", "Teach the patient about the risks of pulmonary embolism", "Wait for the morning physician rounds to report the pain"],
-        a: 0, r: "Filter: Sudden change = act now. Avoid teaching or over-assessing (Comfort/Delay Trap)."
-    },
-    {
-        v: "A diabetic patient presents with tremors, diaphoresis, and a blood glucose of 45 mg/dL.",
-        q: "Applying the 'Symptoms > Numbers' filter, what is the priority?",
-        o: ["Provide 15g of rapid-acting carbohydrates", "Re-draw the blood glucose for a lab-confirmed result", "Document the hypoglycemia in the nursing notes", "Explain the long-term effects of low sugar to the patient"],
-        a: 0, r: "Filter: Symptoms > numbers. Re-drawing the lab is a Delay Trap."
-    },
-    {
-        v: "The nurse observes a large pool of blood under a post-cardiac catheterization patient's groin.",
-        q: "Which 'Complexity Trap' distractor should be ignored in favor of safety?",
-        o: ["Apply direct manual pressure to the site", "Go to the supply room to get a sterile dressing kit", "Call the lab for a stat hemoglobin count", "Complete an incident report immediately"],
-        a: 0, r: "Filter: Control bleeding first. Sterility obsession/Documentation (Complexity/Doc Trap) delays safety."
-    },
-    {
-        v: "An elderly patient with a history of dysphagia is coughing while eating lunch.",
-        q: "What is the priority safety action?",
-        o: ["Make the patient NPO immediately", "Sit with the patient and provide small sips of water", "Teach the patient the 'chin-tuck' maneuver for later", "Document the cough in the nutritional flow sheet"],
-        a: 0, r: "Filter: Unsafe swallowing = NPO. Water/Teaching (Comfort/Delay Trap) increases aspiration risk."
-    },
-    {
-        v: "A nurse is caring for a patient with a blood pressure of 80/40 mmHg and a heart rate of 120 bpm.",
-        q: "Which 'Documentation Trap' must the nurse avoid?",
-        o: ["Initiate an IV fluid bolus as ordered", "Wait for the manual BP cuff to confirm the number", "Enter the vitals into the system before taking action", "Reassure the family that the patient is just tired"],
-        a: 0, r: "Filter: Hypotension = fluids first. Charting first (Doc Trap) is a fail marker."
-    },
-    {
-        v: "A nurse manager identifies that a UAP is checking vitals on an unstable patient who just returned from surgery.",
-        q: "Which delegation filter should be applied?",
-        o: ["RN must reassess the patient personally", "Allow the UAP to finish and then review the numbers", "Ask the UAP to document the vitals in the chart", "Praise the UAP for being helpful"],
-        a: 0, r: "Filter: RN keeps safety-critical actions. Unstable patients cannot be delegated (Authority Trap)."
-    },
-    {
-        v: "A patient with a fractured hip is in extreme pain (10/10). The nurse has an order for PRN morphine.",
-        q: "To avoid the 'Over-assessing' trap, what is the priority?",
-        o: ["Administer the morphine now", "Ask the patient about their pain history for 10 minutes", "Wait until the next shift for a second opinion", "Document the pain level and check again in 30 minutes"],
-        a: 0, r: "Filter: Treat pain if no contraindication. Over-assessing (Delay Trap) is unsafe."
-    },
-    {
-        v: "The nurse finds a fire in a trash can in a patient's room.",
-        q: "What is the first step of the 'Safe Action' protocol?",
-        o: ["Remove the patient from the room", "Call the fire department immediately", "Try to extinguish the fire with a wet blanket", "Document the location of the fire"],
-        a: 0, r: "Filter: First safe step counts (RACE: Rescue). Documentation (Doc Trap) is a failure."
-    },
-    {
-        v: "A nurse is floated to a unit and asked to manage a chest tube for the first time.",
-        q: "Which 'Scope Fear Trap' must be overcome?",
-        o: ["Ask a competent nurse to supervise while performing it", "Refuse the task and leave the unit", "Perform it anyway using a YouTube video", "Document that the task was not done because of fear"],
-        a: 0, r: "Filter: Safety overrides fear. Supervision ensures safety while maintaining scope."
-    },
-    {
-        v: "A patient is admitted with suspected meningitis. Droplet precautions are needed.",
-        q: "Applying the 'Address Stability First' filter, which is the priority?",
-        o: ["Assess the patient's airway and vitals", "Put on a mask and gown before entering", "Read the hospital's policy on infection control", "Document the patient's vaccination history"],
-        a: 0, r: "Filter: Stability first. PPE is vital, but assessing the airway (ABCs) is the core nursing priority."
-    },
-    {
-        v: "A patient's surgical wound has eviscerated. The nurse is alone.",
-        q: "What is the 'Action > Explanation' priority?",
-        o: ["Cover with sterile saline gauze and call for help", "Explain the complication to the patient's family", "Wait for the surgical resident to arrive for a diagnosis", "Document the size of the wound in centimeters"],
-        a: 0, r: "Filter: Act before explaining. Saline gauze (Safety) overrides explanation (Comfort Trap)."
-    },
-    {
-        v: "A patient with a potassium level of 6.8 mEq/L is on the monitor.",
-        q: "To avoid the 'Diagnosis Fixation' trap, the nurse should:",o: ["Assess for ECG changes (peaked T-waves) and act", "Wait for the lab to repeat the test", "Explain the diet for high potassium to the patient", "Document the lab value in the flow sheet"],
-        a: 0, r: "Filter: Breathing/Heart > Labels. Intervene based on clinical risk (unstable) not just numbers."
-    },
-    {
-        v: "A patient's family refuses a blood transfusion for a bleeding patient due to personal beliefs.",
-        q: "Which 'Safety > Politeness' filter applies?",
-        o: ["Notify the physician and document the refusal", "Give the blood anyway while the family is out", "Argue with the family about the risk of death", "Avoid the room to prevent conflict"],
-        a: 0, r: "Filter: Safety > comfort. Documentation/Reporting is the legal/safe path, not violating rights."
-    },
-    {
-        v: "A nurse is giving SBAR report to a doctor about a patient with low urine output.",
-        q: "To avoid 'Over-reporting', the nurse should:",o: ["Provide only the critical facts and the request for action", "Read the entire history of the patient from admission", "Wait for the doctor to finish their lunch before calling", "Suggest three different diagnoses to the doctor"],
-        a: 0, r: "Filter: Report after stabilizing (if needed) and keep it concise. Over-reporting (Delay) is unsafe."
-    },
-    {
-        v: "The nurse identifies that a medication dose is twice the normal range.",
-        q: "Which 'Authority Trap' should the nurse ignore?",
-        o: ["Hold the medication and clarify with the doctor", "Administer it because the doctor is very senior", "Wait for the pharmacist to notice the error", "Document that the dose looks high but give it"],
-        a: 0, r: "Filter: Hold unsafe meds. Fear of acting (Scope Fear) leads to failure."
-    }
-    {
-        v: "A patient 2 hours post-thyroidectomy develops a 'crowing' sound (stridor) and is using neck muscles to breathe.",
-        q: "Which action demonstrates the 'Airway before Diagnosis' filter?",
-        o: ["Prepare for emergency tracheostomy at the bedside", "Check the patient's calcium level results", "Document the sound as 'inspiratory stridor'", "Reassure the patient that some swelling is normal"],
-        a: 0, r: "Filter: Airway before diagnosis. Stridor is a surgical emergency; waiting for labs (Delay Trap) is fatal."
-    },
-    {
-        v: "An infant with tetralogy of Fallot begins to cry and turns blue (Tet spell).",
-        q: "What is the priority intervention to prevent the 'Complexity Trap'?",
-        o: ["Place the infant in a knee-chest position", "Calculate the current oxygen saturation percentage", "Call the cardiologist for a stat echocardiogram", "Explain the pathophysiology of the spell to the mother"],
-        a: 0, r: "Filter: Choose simplest safe action. Knee-chest is the immediate nurse-initiated safety step."
-    },
-    {
-        v: "The nurse is preparing to hang a bag of Potassium Chloride IV but notices the patient has had zero urine output (Anuria) for 6 hours.",
-        q: "Which 'Medication Safety' filter must be applied?",
-        o: ["Hold the infusion and notify the physician", "Administer the infusion as ordered to keep the schedule", "Document the anuria and start the pump at a slower rate", "Check the patient's temperature to rule out infection"],
-        a: 0, r: "Filter: Hold unsafe meds. Giving potassium to an anuric patient (Authority Trap) causes cardiac arrest."
-    },
-    {
-        v: "A patient with a chest tube has a sudden 'gurgling' sound at the insertion site and the dressing is loose.",
-        q: "What is the 'Fast + Conservative' win?",
-        o: ["Tape the dressing on three sides with sterile gauze", "Wait for the wound care nurse to arrive for a consult", "Document the drainage amount and color", "Ask the patient to cough and see if air leaks out"],
-        a: 0, r: "Filter: Prevent air entry immediately. Waiting for consult (Delay Trap) leads to tension pneumothorax."
-    },
-    {
-        v: "A geriatric patient is found confused and attempting to remove their central venous catheter.",
-        q: "To prevent the 'Documentation Trap', the nurse should:",
-        o: ["Reorient the patient and ensure the catheter is secure", "Chart the patient's confusion level in the flow sheet", "Call the family to discuss the need for restraints", "Read the patient's history of dementia"],
-        a: 0, r: "Filter: Act before documenting. Safety (Securing the line) overrides charting (Doc Trap)."
-    },
-    {
-        v: "A patient with an acute MI (Heart Attack) is complaining of 8/10 chest pain despite being on oxygen.",
-        q: "Which action avoids the 'Over-Analysis' trap?",
-        o: ["Administer sublingual nitroglycerin as ordered", "Perform an immediate 12-lead ECG and wait for the reading", "Ask the patient to describe the radiation of the pain in detail", "Re-check the patient's blood pressure every 2 minutes"],
-        a: 0, r: "Filter: Chest pain = basic intervention. Administering nitrates (Safety) overrides over-analysis (Delay Trap)."
-    },
-    {
-        v: "A psychiatric patient begins throwing chairs and shouting in the common area.",
-        q: "What is the priority 'Safety > Comfort' filter?",
-        o: ["Evacuate other patients and call for assistance", "Attempt to provide therapeutic communication to the patient", "Document the patient's exact words in the record", "Ask the patient if they would like a snack to calm down"],
-        a: 0, r: "Filter: Safety > comfort. Evacuation (Safety) is prioritized over de-escalation (Comfort Trap) when violence occurs."
-    },
-    {
-        v: "A patient with a pelvic fracture has not voided and the nurse notes a 'distended bladder' on palpation.",
-        q: "What is the correct 'Scope of Practice' response?",
-        o: ["Perform a bladder scan and report findings to the doctor", "Wait for the doctor to perform the physical assessment", "Document 'urinary retention' and reassess in 4 hours", "Explain the risks of urinary tract infections to the patient"],
-        a: 0, r: "Filter: Nurse-initiated safety allowed. Bladder scanning (Safety) is within scope; waiting (Delay) is not."
-    },
-    {
-        v: "A nurse observes a colleague preparing a medication using a contaminated needle.",
-        q: "Applying the 'Ethical Practice' filter, the nurse must:",
-        o: ["Stop the colleague immediately and provide a new needle", "Document the observation and report it tomorrow", "Wait to see if the patient develops an infection", "Reassure the colleague that mistakes happen"],
-        a: 0, r: "Filter: Patient safety overrides debate. Immediate intervention (Safety) is required over politeness."
-    },
-    {
-        v: "A child with a head injury is vomiting and has a decreased level of consciousness.",
-        q: "What is the 'Action > Explanation' priority?",
-        o: ["Turn the child to the side-lying position", "Explain the signs of ICP to the parents", "Wait for the results of the STAT head CT", "Document the volume of the emesis"],
-        a: 0, r: "Filter: Act before explaining. Positioning (Safety) prevents aspiration; CT/Doc (Delay/Doc Trap) can wait."
-    },
-    // Adding Items 31-50 using the Universal Trap Categories
-    {
-        v: "The nurse manager finds that a staff member has bypassed the scanning system for medications three times.",
-        q: "Which 'Root Cause' response is the safest leadership action?",
-        o: ["Investigate the system design to see if scanners are faulty", "Document the staff member's name and send a warning", "Fire the nurse immediately to set an example", "Reassure the staff that the scanners are optional"],
-        a: 0, r: "Filter: Address the system. Finding the 'why' (Safety Filter) is superior to simple punishment (Authority Trap)."
-    },
-    {
-        v: "A patient on a heparin drip has a large purple bruise appearing on the abdomen.",
-        q: "To avoid the 'Delay Trap', the nurse should:",
-        o: ["Stop the heparin infusion immediately", "Reassess the bruise size in 2 hours", "Draw a STAT aPTT and wait for the result", "Document the 'eccymosis' in the nursing notes"],
-        a: 0, r: "Filter: Hold unsafe meds. Stopping the drug (Safety) is faster than waiting for labs (Delay)."
-    },
-    {
-        v: "During a code blue, the team leader asks the nurse to document the events.",
-        q: "Which 'Time Management' filter should the documentation nurse apply?",
-        o: ["Record times of drug administration immediately after they occur", "Wait until the code is over to write everything from memory", "Document the names of all family members present first", "Explain the code process to the person in the next bed"],
-        a: 0, r: "Filter: Fast + Conservative wins. Accurate real-time tracking (Safety) overrides waiting (Delay)."
-    },
-    {
-        v: "A nurse is caring for a patient in 'Negative Pressure' isolation for TB.",
-        q: "Which action shows 'Safety > Politeness'?",
-        o: ["Firmly asking a visitor to wear an N95 mask before entering", "Allowing the visitor to enter without a mask to avoid conflict", "Documenting that the visitor refused the mask", "Providing the visitor with a standard surgical mask"],
-        a: 0, r: "Filter: Safety > Comfort. Enforcing PPE (Safety) is non-negotiable despite discomfort."
-    },
-    {
-        v: "A patient with a tracheostomy suddenly coughs the tube out (decannulation).",
-        q: "What is the first 'Safe Step'?",
-        o: ["Maintain the airway using a bag-valve-mask or spare tube", "Call the surgeon's office and leave a message", "Document the incident in the hospital's risk management system", "Wait for the respiratory therapist to arrive"],
-        a: 0, r: "Filter: First safe step counts. Airway maintenance (Safety) is priority #1."
-    },
-    {
-        v: "A patient with end-stage renal disease has a BP of 190/110 and is short of breath.",
-        q: "Which 'Renal Care' filter must be applied?",
-        o: ["Assess lung sounds and elevate the head of the bed", "Wait for the dietitian to review the sodium intake", "Document the weight gain from the previous day", "Calculate the total intake for the last 24 hours"],
-        a: 0, r: "Filter: Symptoms > Numbers. Managing fluid overload (Safety) is priority over counting (Doc Trap)."
-    },
-    {
-        v: "The nurse hears a loud 'pop' during a patient's abdominal dressing change followed by pain.",
-        q: "What is the 'Action > Documentation' rule?",
-        o: ["Cover the incision with sterile moist dressings", "Document the 'pop' sound in the narrative notes", "Explain the risk of dehiscence to the patient", "Wait for the resident to inspect the wound"],
-        a: 0, r: "Filter: Act before documenting. Protecting the wound (Safety) is the priority."
-    },
-    {
-        v: "A patient on the psychiatric unit says, 'I feel like ending it all today.'",
-        q: "What is the 'Safety Filter' response?",
-        o: ["Initiate 1:1 constant observation immediately", "Document the statement in the behavior log", "Ask the patient to wait for the psychiatrist's visit", "Reassure the patient that things will get better"],
-        a: 0, r: "Filter: Acute neuro/psych change = escalate safety. 1:1 (Safety) prevents the event."
-    },
-    {
-        v: "A patient's oxygen saturation is 82% on room air.",
-        q: "Applying the 'Oxygen is Nurse-Initiated' rule, what is the priority?",
-        o: ["Apply 2L of oxygen and then notify the provider", "Wait for a written order before starting oxygen", "Document the saturation and check it again in 10 minutes", "Perform a full physical assessment including bowel sounds"],
-        a: 0, r: "Filter: Oxygen is nurse-initiated. Waiting (Authority Trap) or Charting (Doc Trap) causes harm."
-    },
-    {
-        v: "A patient with a femoral arterial line has a disconnected cable and is spraying blood.",
-        q: "What is the absolute priority?",
-        o: ["Apply direct pressure to the site", "Call the monitor technician to fix the alarm", "Document the estimated blood loss", "Wait for the ICU nurse to arrive"],
-        a: 0, r: "Filter: Control bleeding first. Simplest safe action (Pressure) beats everything else."
-    }
-    {
-        v: "A patient with a central line suddenly develops sharp chest pain and a 'mill-wheel' murmur is heard over the heart during insertion.",
-        q: "Which action avoids the 'Diagnosis Trap' and prioritizes safety?",
-        o: ["Place the patient in Trendelenburg on the left side", "Wait for a chest X-ray to diagnose an air embolism", "Document the heart sounds in the cardiovascular section", "Reassure the patient that the pain will pass"],
-        a: 0, r: "Filter: Treat symptoms (suspected air emboli) immediately. Waiting for X-ray (Diagnosis Trap) is unsafe."
-    },
-    {
-        v: "The nurse is caring for a patient who is post-operative day 1. The UAP reports a blood pressure of 70/40 mmHg.",
-        q: "To avoid the 'Documentation Trap', what should the nurse do?",
-        o: ["Assess the patient immediately and start fluids if ordered", "Tell the UAP to enter the data into the system first", "Wait for the 2-hour scheduled reassessment", "Document the low reading and call the dietitian"],
-        a: 0, r: "Filter: Act before documenting. Abnormal + unstable = intervene."
-    },
-    {
-        v: "A patient in the emergency department is screaming in pain due to a visible open fracture.",
-        q: "What is the 'Safety > Politeness' priority?",
-        o: ["Cover the wound with a sterile dressing and stabilize the limb", "Ask the patient to lower their voice to be polite to others", "Explain the hospital's noise policy to the family", "Document the patient's behavioral reaction to pain"],
-        a: 0, r: "Filter: Safety > comfort. Treat the injury (Safety) before addressing the behavior (Comfort Trap)."
-    },
-    {
-        v: "A nurse is about to administer a high-alert medication. The barcode scanner is not working.",
-        q: "Which 'Time Management' rule applies?",
-        o: ["Perform a manual double-check with another RN", "Bypass the scan and document 'system failure' after giving it", "Wait until the IT department fixes the scanner", "Ask the patient if they recognize the medication"],
-        a: 0, r: "Filter: Fast + Conservative wins. Manual double-check (Safety) is better than bypassing or waiting."
-    },
-    {
-        v: "A patient with a cast on the leg says, 'My toes feel like they are asleep and I can't move them.'",
-        q: "What is the 'Action > Explanation' priority?",
-        o: ["Notify the surgeon of suspected compartment syndrome", "Explain to the patient that it's normal to have some numbness", "Wait until the next scheduled neurovascular check", "Document 'numbness noted' and elevate the leg higher"],
-        a: 0, r: "Filter: Acute neuro/vascular change = escalate. Delaying (Delay Trap) leads to permanent nerve damage."
-    },
-    {
-        v: "A nurse manager notes that many staff are not reporting 'Near Misses' because they fear punishment.",
-        q: "Which 'Leadership Safety Filter' should be applied?",
-        o: ["Implement a non-punitive, just culture for reporting", "Create a list of staff who fail to report and post it", "Wait for the next accreditation survey to fix the issue", "Document that the staff is non-compliant"],
-        a: 0, r: "Filter: Address the system. Removing fear (Safety) increases reporting and prevents errors."
-    },
-    {
-        v: "A child in the pediatric unit is found with a plastic toy wedged in their throat and is not breathing.",
-        q: "What is the priority safety action?",
-        o: ["Perform age-appropriate airway clearance maneuvers", "Call the child's parents to explain the situation", "Document the size and color of the toy", "Wait for the pediatric code team to arrive"],
-        a: 0, r: "Filter: Airway before diagnosis. Immediate intervention (Safety) overrides explanation/waiting."
-    },
-    {
-        v: "The nurse is caring for a patient with a massive GI bleed who is becoming lethargic.",
-        q: "Which 'Fluid Balance' filter applies?",
-        o: ["Ensure large-bore IV access and prepare for rapid infusion", "Calculate the total output from the last 12 hours", "Wait for the gastroenterologist to perform an endoscopy", "Document the lethargy in the neurological flow sheet"],
-        a: 0, r: "Filter: Hypotension/Bleeding = fluids first. Calculation/Documentation (Doc Trap) is secondary."
-    },
-    {
-        v: "A nurse is floating to an unfamiliar unit and is asked to hang a medication they have never heard of.",
-        q: "Which 'Scope Fear Trap' must be avoided?",
-        o: ["Look up the medication in a drug guide and verify with an RN", "Administer it because the doctor ordered it", "Refuse to give any medications on the unit", "Document that the medication was not given due to lack of knowledge"],
-        a: 0, r: "Filter: Hold unsafe meds/Verify. Knowledge acquisition (Safety) overrides blind obedience (Authority Trap)."
-    },
-    {
-        v: "A patient is admitted for a simple procedure but develops a sudden, severe allergic reaction to the skin prep.",
-        q: "What is the 'Universal Filter' response?",
-        o: ["Wash the skin immediately and initiate the allergy protocol", "Wait for the surgeon to come into the room to see the rash", "Document the rash and describe the edges", "Explain to the patient that they might have an allergy"],
-        a: 0, r: "Filter: First safe step counts. Remove the trigger (Safety) immediately."
-    }
-];
-
-*** END OF COMPETENCY ASSESSMENT ***<br>
-            Ensure all 50 items are reviewed before final submission.
-        </p>
+    
+    <div class="footer-note">
+        *** END OF COMPETENCY ASSESSMENT ***<br>
+        Ensure all 50 items are reviewed before final submission.
     </div>
     
-    <button class="btn-submit" onclick="analyzePerformance()">SUBMIT FOR CLINICAL EVALUATION</button>
+    <button class="btn-submit" onclick="analyzePerformance()">PROCESS TRANSCRIPT</button>
 </div>
 
 <div id="transcript" class="wrapper">
@@ -365,23 +54,85 @@ const questions = [
         <h1 style="color: #000;">PERFORMANCE TRANSCRIPT</h1>
         <p style="color: #333;">Saudi Commission for Health Specialties | Level 4 Evaluator</p>
     </div>
-    
-    <div id="meta-data" style="background: #f9f9f9; padding: 20px; border: 1px solid #000; margin-bottom: 30px; font-family: monospace;">
-        </div>
-
-    <div id="analysis-results">
-        </div>
-    
+    <div id="meta-data" style="background: #f9f9f9; padding: 20px; border: 1px solid #000; margin-bottom: 30px; font-family: monospace;"></div>
+    <div id="analysis-results"></div>
     <button class="btn-submit" style="background: #000;" onclick="window.print()">PRINT OFFICIAL RECORD</button>
     <button class="btn-submit" style="background: #444; margin-top: 10px;" onclick="location.reload()">RETAKE SIMULATION</button>
 </div>
 
 <script>
-// Fungsi ini menghubungkan Database Soal dengan UI Transcript
+const questions = [
+    { v: "A post-op patient has SOB, is pale, and using accessory muscles.", q: "Which action is priority to avoid 'Delay Trap'?", o: ["Apply O2 immediately", "12-lead ECG", "Reassess in 15 mins", "Document RR"], a: 0, r: "Act before documenting. O2 is nurse-initiated." },
+    { v: "Head injury, GCS dropped from 14 to 11.", q: "What is the correct Safety Filter?", o: ["Notify Rapid Response", "Repeat GCS in 1hr", "Check pupils & document", "Review baseline"], a: 0, r: "Acute neuro change = escalate immediately." },
+    { v: "4yo child climbing out of bed.", q: "Action to prevent immediate fall?", o: ["Physically assist back to bed", "Teach bed safety", "Calculate fall score", "Ask mom to watch"], a: 0, r: "Prevent fall immediately. Teaching is a Delay Trap." },
+    { v: "IV antibiotic rash, wheezing, hypotension.", q: "Which Authority Trap to avoid?", o: ["Stop infusion immediately", "Call MD for order to stop", "Calculate remaining vol", "Reassure patient"], a: 0, r: "Hold unsafe meds, don't wait for orders." },
+    { v: "Patient unresponsive, no pulse.", q: "First Safe Step?", o: ["Activate Emergency/CPR", "Check DNR in chart", "Document discovery time", "Wait for code team"], a: 0, r: "First safe step counts. CPR is priority." },
+    { v: "DVT patient, sudden sharp chest pain.", q: "Safest nurse-initiated action?", o: ["Bed rest and O2", "Check pedal pulses", "Teach PE risks", "Wait for MD rounds"], a: 0, r: "Sudden change = act now." },
+    { v: "Diabetic, tremors, glucose 45 mg/dL.", q: "Priority action?", o: ["15g rapid carbs", "Re-draw lab", "Document findings", "Explain low sugar"], a: 0, r: "Symptoms > numbers. Treat hypoglycemia now." },
+    { v: "Bleeding pool under cath groin site.", q: "Action to take?", o: ["Apply direct pressure", "Get sterile kit", "Call lab for Hgb", "Incident report"], a: 0, r: "Control bleeding first. Sterility is a Complexity Trap." },
+    { v: "Elderly coughing while eating.", q: "Priority safety action?", o: ["Make NPO immediately", "Give sips of water", "Teach chin-tuck", "Document cough"], a: 0, r: "Unsafe swallowing = NPO." },
+    { v: "BP 80/40, HR 120.", q: "Documentation Trap to avoid?", o: ["Initiate fluid bolus", "Confirm with manual cuff", "Enter vitals into system", "Reassure family"], a: 0, r: "Hypotension = fluids first. Charting later." },
+    { v: "UAP checking vitals on unstable post-op.", q: "Delegation filter?", o: ["RN reassess personally", "Let UAP finish", "Ask UAP to chart", "Praise UAP"], a: 0, r: "RN keeps safety-critical actions." },
+    { v: "Fractured hip, pain 10/10, has PRN morphine.", q: "Priority action?", o: ["Administer morphine now", "Take 10min history", "Wait for 2nd opinion", "Document & recheck"], a: 0, r: "Treat pain if no contraindication." },
+    { v: "Fire in trash can in room.", q: "First step?", o: ["Remove patient", "Call fire dept", "Extinguish fire", "Document location"], a: 0, r: "RACE: Rescue first." },
+    { v: "Floated to unit, new with chest tubes.", q: "Safety action?", o: ["Supervised performance", "Refuse and leave", "Watch YouTube", "Document fear"], a: 0, r: "Supervision ensures safety." },
+    { v: "Suspected meningitis, needs precautions.", q: "Priority?", o: ["Assess airway/vitals", "Gown/Mask first", "Read policy", "Document vaccines"], a: 0, r: "Address stability (ABCs) first." },
+    { v: "Wound eviscerated.", q: "Action priority?", o: ["Saline gauze & help", "Explain to family", "Wait for resident", "Document size"], a: 0, r: "Act before explaining." },
+    { v: "Potassium 6.8, on monitor.", q: "Action to take?", o: ["Check for peaked T-waves", "Repeat lab", "Explain diet", "Document value"], a: 0, r: "Heart > Labels. Check ECG risk." },
+    { v: "Family refuses blood for bleeding patient.", q: "Safety filter?", o: ["Notify MD/Document", "Give blood anyway", "Argue with family", "Avoid room"], a: 0, r: "Documentation/Reporting is the legal safety path." },
+    { v: "SBAR report for low urine output.", q: "Avoid Over-reporting?", o: ["Brief facts/Action request", "Read full history", "Wait for MD lunch", "Suggest diagnoses"], a: 0, r: "Keep reports concise and action-oriented." },
+    { v: "Medication dose is double normal.", q: "Authority Trap to ignore?", o: ["Hold and clarify", "Give because MD said so", "Wait for pharmacy", "Document & give"], a: 0, r: "Hold unsafe meds." },
+    // --- Items 21-50 Added Below ---
+    { v: "Post-thyroidectomy, stridor heard.", q: "Airway filter?", o: ["Emergency Trach prep", "Check Calcium", "Document sound", "Reassure swelling"], a: 0, r: "Airway before diagnosis." },
+    { v: "Tetralogy of Fallot blue spell.", q: "Simples action?", o: ["Knee-chest position", "Calculate SpO2", "Call Cardiology", "Explain pathophysiology"], a: 0, r: "Choose simplest safe action." },
+    { v: "Potassium IV ordered, patient is anuric.", q: "Safety filter?", o: ["Hold infusion", "Give as ordered", "Chart and slow rate", "Check Temp"], a: 0, r: "Hold unsafe meds in anuria." },
+    { v: "Chest tube gurgling at site.", q: "Fast win?", o: ["Tape 3 sides gauze", "Wait for Wound nurse", "Document drainage", "Ask to cough"], a: 0, r: "Prevent air entry immediately." },
+    { v: "Confused patient pulling IV line.", q: "Action priority?", o: ["Secure line/Reorient", "Chart confusion", "Call family", "Read history"], a: 0, r: "Act before documenting." },
+    { v: "Acute MI, pain 8/10.", q: "Safety filter?", o: ["Nitroglycerin now", "ECG and wait", "Detailed pain description", "BP every 2 mins"], a: 0, r: "Chest pain = basic intervention." },
+    { v: "Psych patient throwing chairs.", q: "Safety > Comfort?", o: ["Evacuate others/Help", "Therapeutic talk", "Document words", "Give snack"], a: 0, r: "Safety > Comfort in violence." },
+    { v: "Distended bladder, pelvic fracture.", q: "Scope of practice?", o: ["Bladder scan/Report", "Wait for MD exam", "Document retention", "Explain UTI"], a: 0, r: "Nurse-initiated safety allowed." },
+    { v: "Colleague using dirty needle.", q: "Ethical filter?", o: ["Stop colleague now", "Report tomorrow", "Watch for infection", "Reassure colleague"], a: 0, r: "Safety overrides debate." },
+    { v: "Head injury, child vomiting.", q: "Safety priority?", o: ["Side-lying position", "Explain ICP", "Wait for CT", "Document volume"], a: 0, r: "Positioning prevents aspiration." },
+    { v: "Staff bypassing med scanners.", q: "Leadership filter?", o: ["Investigate system", "Warn staff", "Fire nurse", "Reassure staff"], a: 0, r: "Address the system (why)." },
+    { v: "Heparin drip, large bruise.", q: "Delay trap?", o: ["Stop Heparin now", "Reassess in 2hrs", "STAT aPTT/Wait", "Document bruise"], a: 0, r: "Hold unsafe meds immediately." },
+    { v: "Code Blue, tasked with charting.", q: "Time filter?", o: ["Real-time drug logs", "Chart from memory later", "Chart family presence", "Explain to neighbor"], a: 0, r: "Fast + Conservative wins." },
+    { v: "TB isolation, visitor no mask.", q: "Safety filter?", o: ["Firmly require N95", "Allow entry", "Document refusal", "Give surgical mask"], a: 0, r: "Safety > Politeness." },
+    { v: "Trach decannulation.", q: "First safe step?", o: ["BVM or spare tube", "Call surgeon", "Document incident", "Wait for RT"], a: 0, r: "First safe step is airway." },
+    { v: "Renal patient, SOB, BP 190/110.", q: "Symptoms filter?", o: ["Elevate HOB/Assess", "Wait for Dietitian", "Document weight", "Calculate Intake"], a: 0, r: "Symptoms > Numbers." },
+    { v: "Abdominal 'pop' during dressing.", q: "Action rule?", o: ["Sterile moist gauze", "Document 'pop'", "Explain dehiscence", "Wait for MD"], a: 0, r: "Protect wound before charting." },
+    { v: "Psych: 'I feel like ending it'.", q: "Safety filter?", o: ["1:1 Observation", "Document log", "Wait for psych", "Reassure"], a: 0, r: "Acute psych change = escalate." },
+    { v: "SpO2 82% room air.", q: "Nurse-initiated?", o: ["Apply 2L O2 then call", "Wait for order", "Document & recheck", "Full physical exam"], a: 0, r: "O2 is nurse-initiated safety." },
+    { v: "Arterial line disconnected/Bleeding.", q: "Priority?", o: ["Direct pressure", "Call tech", "Document loss", "Wait for ICU RN"], a: 0, r: "Control bleeding first." },
+    { v: "Central line, sharp pain, murmur.", q: "Diagnosis trap?", o: ["Trendelenburg Left", "Wait for X-ray", "Document sounds", "Reassure"], a: 0, r: "Treat suspected air emboli now." },
+    { v: "Post-op BP 70/40 reported by UAP.", q: "Action rule?", o: ["Assess/Start fluids", "Tell UAP to chart", "Wait for 2hr check", "Document/Call diet"], a: 0, r: "Abnormal + unstable = intervene." },
+    { v: "ED screaming, open fracture.", q: "Safety > Politeness?", o: ["Stabilize/Dress wound", "Ask to be quiet", "Explain noise policy", "Document behavior"], a: 0, r: "Safety > Comfort." },
+    { v: "High-alert med, scanner broken.", q: "Time rule?", o: ["Manual double check", "Bypass/Chart later", "Wait for IT", "Ask patient"], a: 0, r: "Fast + Conservative = Double check." },
+    { v: "Cast, toes numb/immobile.", q: "Action priority?", o: ["Notify Surgeon", "Explain normality", "Wait for next check", "Document/Elevate"], a: 0, r: "Acute neuro change = escalate." },
+    { v: "Near-miss reporting fear.", q: "Leadership filter?", o: ["Non-punitive culture", "Post shame list", "Wait for survey", "Document non-compliance"], a: 0, r: "Address system fear." },
+    { v: "Child choking on toy, not breathing.", q: "Safety priority?", o: ["Airway maneuvers", "Call parents", "Document color", "Wait for team"], a: 0, r: "Airway before diagnosis." },
+    { v: "GI bleed, becoming lethargic.", q: "Fluid filter?", o: ["Ensure IV/Prepare bolus", "Calculate 12hr out", "Wait for Scope", "Document lethargy"], a: 0, r: "Bleeding = fluids first." },
+    { v: "Floating, unknown medication.", q: "Scope trap?", o: ["Drug guide/Verify", "Give anyway", "Refuse all meds", "Document lack of knowledge"], a: 0, r: "Hold and Verify." },
+    { v: "Allergic reaction to skin prep.", q: "Universal filter?", o: ["Wash skin/Protocol", "Wait for surgeon", "Document edges", "Explain allergy"], a: 0, r: "Remove trigger immediately." }
+];
+
+function init() {
+    const mount = document.getElementById('quiz-mount');
+    questions.forEach((q, index) => {
+        const div = document.createElement('div');
+        div.className = 'q-card';
+        div.innerHTML = `
+            <div class="vignette">${q.v}</div>
+            <span class="question">${index + 1}. ${q.q}</span>
+            ${q.o.map((opt, i) => `<label class="opt"><input type="radio" name="q${index}" value="${i}"> ${opt}</label>`).join('')}
+        `;
+        mount.appendChild(div);
+    });
+}
+
 function analyzePerformance() {
     const nameInput = document.getElementById('candidate').value;
     if(!nameInput) {
-        alert("CRITICAL ERROR: Candidate Name is required for legal transcript generation.");
+        alert("CRITICAL ERROR: Candidate Name is required.");
         return;
     }
 
@@ -393,46 +144,33 @@ function analyzePerformance() {
     questions.forEach((q, index) => {
         const selected = document.querySelector(`input[name="q${index}"]:checked`);
         const isCorrect = selected && parseInt(selected.value) === q.a;
-        
         if(isCorrect) rawScore++;
 
-        // Membuat Tampilan Review Per Soal (Key & Rationale)
         const row = document.createElement('div');
         row.className = 'result-row';
         row.innerHTML = `
-            <p><strong>Item ${index + 1}:</strong> ${q.q}</p>
-            <p>Status: <span class="${isCorrect ? 'pass-marker' : 'fail-marker'}">${isCorrect ? 'SAFE' : 'UNSAFE / TRAPPED'}</span></p>
-            <p><strong>Correct Action:</strong> ${q.o[q.a]}</p>
-            <div class="rationale">
-                <strong>Safety Filter & Rationale:</strong> ${q.r}
-            </div>
+            <p><strong>Item ${index + 1}:</strong> Status: <span class="${isCorrect ? 'pass-marker' : 'fail-marker'}">${isCorrect ? 'SAFE' : 'UNSAFE'}</span></p>
+            <p>Correct: ${q.o[q.a]}</p>
+            <div class="rationale"><strong>Rationale:</strong> ${q.r}</div>
         `;
         reviewArea.appendChild(row);
     });
 
-    // Kalkulasi Skor dan Status
     const percentage = Math.round((rawScore / totalItems) * 100);
-    const passingScore = 80; // Level 4 requires higher resistance (80%)
+    const passingScore = 80;
     const isPassed = percentage >= passingScore;
 
-    // Menampilkan Metadata di Transcript
     document.getElementById('exam-view').style.display = 'none';
     document.getElementById('transcript').style.display = 'block';
     
     document.getElementById('meta-data').innerHTML = `
-        <table style="width: 100%; border-collapse: collapse;">
-            <tr><td><strong>CANDIDATE NAME:</strong></td><td>${nameInput.toUpperCase()}</td></tr>
-            <tr><td><strong>TOTAL ITEMS:</strong></td><td>${totalItems}</td></tr>
-            <tr><td><strong>RAW SCORE:</strong></td><td>${rawScore} / ${totalItems}</td></tr>
-            <tr><td><strong>PERCENTAGE:</strong></td><td>${percentage}%</td></tr>
-            <tr><td><strong>PASSING GRADE:</strong></td><td>${passingScore}%</td></tr>
-            <tr><td><strong>FINAL STATUS:</strong></td><td><span class="${isPassed ? 'pass-marker' : 'fail-marker'}">${isPassed ? 'SUCCESSFUL (SAFE)' : 'UNSUCCESSFUL (UNSAFE)'}</span></td></tr>
-        </table>
+        <p><strong>CANDIDATE:</strong> ${nameInput.toUpperCase()}</p>
+        <p><strong>SCORE:</strong> ${rawScore} / ${totalItems} (${percentage}%)</p>
+        <p><strong>STATUS:</strong> <span class="${isPassed ? 'pass-marker' : 'fail-marker'}">${isPassed ? 'PASSED' : 'FAILED'}</span></p>
     `;
     window.scrollTo(0,0);
 }
 
-// Inisialisasi awal saat halaman dimuat
 window.onload = init;
 </script>
 </body>
