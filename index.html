@@ -3,606 +3,150 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SCFHS Prometric Mastery: Competency-Trap-Filter Test</title>
+    <title>SCFHS Prometric Nursing - Part 1 (1-25)</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 900px; margin: 0 auto; padding: 20px; background-color: #f4f7f6; }
-        .header { background: #2c3e50; color: white; padding: 20px; border-radius: 8px; text-align: center; margin-bottom: 30px; }
-        .metadata-box { background: white; padding: 15px; border-radius: 8px; border: 1px solid #ddd; margin-bottom: 20px; display: flex; justify-content: space-between; }
-        .test-item { background: white; padding: 25px; border-radius: 8px; margin-bottom: 25px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); border-left: 5px solid #3498db; }
-        .scenario { font-weight: bold; margin-bottom: 15px; color: #2980b9; }
-        .options { list-style-type: none; padding: 0; }
-        .options li { margin-bottom: 10px; padding: 10px; border: 1px solid #eee; border-radius: 4px; transition: 0.3s; }
-        .options li:hover { background-color: #f9f9f9; }
-        .rationale-box { margin-top: 15px; padding: 15px; background-color: #e8f4fd; border-radius: 4px; display: none; }
-        .key-answer { font-weight: bold; color: #27ae60; }
-        .trap-warning { color: #c0392b; font-style: italic; }
-        .filter-rule { color: #2980b9; font-weight: bold; }
-        button { background: #27ae60; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; }
-        .show-all-btn { margin-bottom: 20px; background: #34495e; }
-        @media print { .show-all-btn, button { display: none; } .rationale-box { display: block !important; } }
+        :root { --primary: #2c3e50; --accent: #3498db; --bg: #f4f7f6; --text: #333; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; margin: 0; padding: 20px; }
+        .container { max-width: 900px; margin: auto; background: white; padding: 40px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        
+        /* HEADER SECTION */
+        .test-header { border-bottom: 4px solid var(--primary); margin-bottom: 30px; padding-bottom: 20px; }
+        .test-header h1 { margin: 0; color: var(--primary); font-size: 24px; text-transform: uppercase; }
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; background: #f9f9f9; padding: 20px; border-radius: 8px; border: 1px solid #ddd; }
+        .info-item { font-weight: bold; }
+        .info-item span { font-weight: normal; border-bottom: 1px solid #999; padding: 0 10px; }
+
+        /* TEST ITEM BLOCK STYLE */
+        .test-block { margin-bottom: 40px; padding: 25px; border: 1px solid #e1e1e1; border-radius: 10px; background: #fff; position: relative; }
+        .question-number { position: absolute; top: -15px; left: 20px; background: var(--primary); color: white; padding: 5px 15px; border-radius: 20px; font-weight: bold; font-size: 14px; }
+        .vignette { font-weight: 600; font-size: 1.1em; color: #2c3e50; margin-bottom: 15px; display: block; }
+        .options-list { list-style: none; padding: 0; margin: 20px 0; }
+        .option { padding: 12px 15px; border: 1px solid #ecf0f1; margin-bottom: 8px; border-radius: 6px; cursor: pointer; transition: background 0.2s; }
+        .option:hover { background: #f0f8ff; border-color: var(--accent); }
+        
+        /* RATIONALE & KEY AREA */
+        .feedback-area { margin-top: 20px; padding: 20px; background: #edf2f7; border-radius: 8px; border-left: 5px solid var(--accent); }
+        .key-row { font-weight: bold; color: #27ae60; margin-bottom: 10px; font-size: 1.1em; }
+        .rationale-text { font-size: 0.95em; color: #4a5568; }
+        .trap-tag { color: #e53e3e; font-weight: bold; text-transform: uppercase; font-size: 0.8em; }
+
+        .footer { text-align: center; margin-top: 50px; color: #7f8c8d; font-size: 0.9em; border-top: 1px solid #eee; padding-top: 20px; }
+        
+        @media print { .container { box-shadow: none; } .feedback-area { display: block !important; } }
     </style>
 </head>
 <body>
 
-<div class="header">
-    <h1>SCFHS Nursing Prometric: The Safety Filter Exam</h1>
-    <p>Target: Item Writers & Instructors | Level 4 Clinical Vignettes</p>
-</div>
-
-<div class="metadata-box">
-    <div><strong>Test Taker:</strong> ___________________________</div>
-    <div><strong>Passing Grade:</strong> 85% (Safety Critical)</div>
-    <div><strong>Score:</strong> ____ / 100</div>
-</div>
-
-<button class="show-all-btn" onclick="toggleAll()">Toggle Instructor View (Keys & Rationales)</button>
-
-<div class="test-item">
-    <div class="scenario">Item 1: A patient who just underwent thyroidectomy develops audible stridor and restlessness. The pulse oximetry is 94%. Which action should the nurse take first?</div>
-    <ul class="options">
-        <li>A. Check the surgical dressing for signs of hemorrhage.</li>
-        <li>B. Prepare for immediate tracheostomy at the bedside.</li>
-        <li>C. Notify the surgeon regarding the change in respiratory status.</li>
-        <li>D. Explain to the patient that some swelling is normal after surgery.</li>
-    </ul>
-    <div class="rationale-box">
-        <p><span class="key-answer">Correct Answer: B</span></p>
-        <p><span class="trap-warning">Prometric Trap:</span> <strong>Delay disguised as thoroughness (Option A)</strong> or <strong>Authority Trap (Option C)</strong>.</p>
-        <p><span class="filter-rule">Safety Filter:</span> <strong>Airway before Diagnosis/Documentation.</strong> Stridor indicates an immediate airway emergency; waiting for a surgeon or checking dressings causes a fatal delay.</p>
+<div class="container">
+    <div class="test-header">
+        <h1>SCFHS Prometric Nursing: Competency-Trap-Filter</h1>
+        <div class="info-grid">
+            <div class="info-item">Name: <span>__________________________</span></div>
+            <div class="info-item">Date: <span>2026-04-13</span></div>
+            <div class="info-item">Passing Grade: <span>85%</span></div>
+            <div class="info-item">Score: <span>_____ / 25</span></div>
+        </div>
     </div>
-</div>
 
-<div class="test-item">
-    <div class="scenario">Item 2: A nurse is preparing to administer Digoxin to a patient. The patient’s heart rate is 54 bpm, and the patient reports seeing "yellow halos" around the lights. What is the priority nursing action?</div>
-    <ul class="options">
-        <li>A. Document the heart rate and the patient's subjective visual report.</li>
-        <li>B. Hold the medication and continue to monitor the patient every 15 minutes.</li>
-        <li>C. Administer the dose and then call the physician to report the visual changes.</li>
-        <li>D. Withhold the dose immediately.</li>
-    </ul>
-    <div class="rationale-box">
-        <p><span class="key-answer">Correct Answer: D</span></p>
-        <p><span class="trap-warning">Prometric Trap:</span> <strong>Documentation Trap (Option A)</strong> and <strong>Monitoring instead of Intervening (Option B)</strong>.</p>
-        <p><span class="filter-rule">Safety Filter:</span> <strong>Hold unsafe meds, don’t wait.</strong> The nurse has the autonomy to withhold an unsafe medication based on clinical evidence of toxicity without needing a prior order to "stop."</p>
-    </div>
-</div>
-
-<div class="test-item">
-    <div class="scenario">Item 3: A patient 2 hours post-laparotomy has a blood pressure of 88/50 mmHg and a heart rate of 120 bpm. The patient is pale and diaphoretic. What is the nurse's first action?</div>
-    <ul class="options">
-        <li>A. Increase the IV fluid rate as per standing protocol for hypotension.</li>
-        <li>B. Perform a full head-to-toe assessment to find the source of bleeding.</li>
-        <li>C. Re-check the blood pressure in 15 minutes to confirm the trend.</li>
-        <li>D. Call the rapid response team to evaluate the patient's status.</li>
-    </ul>
-    <div class="rationale-box">
-        <p><span class="key-answer">Correct Answer: A</span></p>
-        <p><span class="trap-warning">Prometric Trap:</span> <strong>Complexity Trap (Option B)</strong> - trying to find the "why" instead of fixing the "what."</p>
-        <p><span class="filter-rule">Safety Filter:</span> <strong>Hypotension = Fluids First.</strong> Stability overrides the need for a comprehensive diagnosis in the acute phase.</p>
-    </div>
-</div>
-
-<div class="test-item">
-    <div class="scenario">Item 4: A nurse enters the room of a patient on droplet precautions and finds the patient on the floor, unresponsive and not breathing. What should the nurse do first?</div>
-    <ul class="options">
-        <li>A. Leave the room to find the correct PPE kit and N95 mask.</li>
-        <li>B. Begin chest compressions immediately while calling for help.</li>
-        <li>C. Activate the emergency response system and wait for the code team.</li>
-        <li>D. Check the patient's wristband to confirm identity before starting CPR.</li>
-    </ul>
-    <div class="rationale-box">
-        <p><span class="key-answer">Correct Answer: B</span></p>
-        <p><span class="trap-warning">Prometric Trap:</span> <strong>Overuse of PPE steps (Option A).</strong> In many exams, safety protocols are tested, but life-saving stability comes first in "dead on floor" scenarios.</p>
-        <p><span class="filter-rule">Safety Filter:</span> <strong>Address patient stability first.</strong> An unresponsive, non-breathing patient requires immediate intervention that outweighs procedural perfection.</p>
-    </div>
-</div>
-
-<div class="test-item">
-    <div class="scenario">Item 5: During a dressing change for a post-operative abdominal wound, the nurse observes a large amount of bright red blood spurting from the incision site. What is the priority?</div>
-    <ul class="options">
-        <li>A. Apply firm direct pressure to the site using sterile gauze.</li>
-        <li>B. Run to the nursing station to call the surgeon immediately.</li>
-        <li>C. Obtain a sterile culture swab to check for underlying infection.</li>
-        <li>D. Document the estimated blood loss in the clinical notes.</li>
-    </ul>
-    <div class="rationale-box">
-        <p><span class="key-answer">Correct Answer: A</span></p>
-        <p><span class="trap-warning">Prometric Trap:</span> <strong>Sterility Obsession or Documentation Trap.</strong></p>
-        <p><span class="filter-rule">Safety Filter:</span> <strong>Control bleeding first.</strong> In active hemorrhage, "Pressure" is the safe action; "Sterility" is secondary to "Survival."</p>
-    </div>
-  <div class="test-item">
-    <div class="scenario">Item 6: A patient with chronic obstructive pulmonary disease (COPD) is receiving oxygen at 2L/min via nasal cannula. The patient suddenly becomes agitated, confused, and the SpO2 drops to 82%. What is the nurse’s immediate action?</div>
-    <ul class="options">
-        <li>A. Increase the oxygen flow rate to 4L/min and monitor for CO2 narcosis.</li>
-        <li>B. Call the respiratory therapist to perform an arterial blood gas (ABG) draw.</li>
-        <li>C. Wait for the physician’s order before changing the prescribed oxygen flow.</li>
-        <li>D. Encourage the patient to perform pursed-lip breathing exercises.</li>
-    </ul>
-    <div class="rationale-box">
-        <p><span class="key-answer">Correct Answer: A</span></p>
-        <p><span class="trap-warning">Prometric Trap:</span> <strong>Authority/Waiting Trap (Option C)</strong> or <strong>Complexity Trap (Option B)</strong>.</p>
-        <p><span class="filter-rule">Safety Filter:</span> <strong>Oxygen is Nurse-Initiated in emergencies.</strong> Hypoxia kills faster than CO2 retention. Act before the ABG results or orders arrive.</p>
-    </div>
-</div>
-
-<div class="test-item">
-    <div class="scenario">Item 7: While performing a routine check on a patient admitted for a head injury, the nurse notes the patient’s Glasgow Coma Scale (GCS) has shifted from 14 to 11. The patient is now somnolent but arousable to pain. What is the priority?</div>
-    <ul class="options">
-        <li>A. Re-assess the GCS in one hour to determine if this is a temporary fluctuation.</li>
-        <li>B. Perform a full cranial nerve assessment and document the findings.</li>
-        <li>C. Notify the neurosurgeon immediately of the acute decline.</li>
-        <li>D. Provide a quiet environment to allow the patient to rest.</li>
-    </ul>
-    <div class="rationale-box">
-        <p><span class="key-answer">Correct Answer: C</span></p>
-        <p><span class="trap-warning">Prometric Trap:</span> <strong>Reassessment Loop (Option A)</strong> or <strong>Documentation Trap (Option B)</strong>.</p>
-        <p><span class="filter-rule">Safety Filter:</span> <strong>Acute Neuro Change = Escalate.</strong> A 3-point drop in GCS is a neurosurgical emergency. Monitoring "trends" during an acute drop is a fail marker.</p>
-    </div>
-</div>
-
-<div class="test-item">
-    <div class="scenario">Item 8: A patient presents with severe epigastric pain radiating to the back, nausea, and a rigid, board-like abdomen. The nurse suspects acute pancreatitis or perforation. Which action takes precedence?</div>
-    <ul class="options">
-        <li>A. Maintain NPO status and prepare for emergency surgical consultation.</li>
-        <li>B. Administer a prescribed oral antacid to relieve the epigastric pain.</li>
-        <li>C. Assist the patient to a supine position for a thorough physical exam.</li>
-        <li>D. Wait for the serum amylase and lipase results to confirm the diagnosis.</li>
-    </ul>
-    <div class="rationale-box">
-        <p><span class="key-answer">Correct Answer: A</span></p>
-        <p><span class="trap-warning">Prometric Trap:</span> <strong>Diagnosis Fixation (Option D)</strong> or <strong>Comfort Trap (Option B)</strong>.</p>
-        <p><span class="filter-rule">Safety Filter:</span> <strong>Acute Abdomen = Protect & Report.</strong> Rigid abdomen implies a surgical emergency. NPO is the safety filter; feeding or waiting for labs is a "Delay Trap."</p>
-    </div>
-  <div class="item-block">
-            <span class="vignette">A patient with acute asthma exacerbation has high-pitched wheezing. After 15 minutes, the nurse notes the chest is silent on auscultation and the patient is drowsy.</span>
-            <div class="scenario">What is the priority nursing action?</div>
-            <div class="options">
-                <div class="opt">A. Administer a prescribed PRN sedative to reduce anxiety.</div>
-                <div class="opt">B. Prepare for immediate endotracheal intubation.</div>
-                <div class="opt">C. Request a repeat peak flow meter reading to confirm status.</div>
-                <div class="opt">D. Document "silent chest" and continue to monitor vitals.</div>
-            </div>
-            <div class="rationale hidden">
-                <span class="key">Key: B</span><br>
-                <span class="trap">Trap: Delay (reassessing) & Complexity (wait for labs).</span><br>
-                <span class="filter">Filter: Airway before Diagnosis. A silent chest in asthma is a pre-arrest emergency.</span>
-            </div>
+    <div class="test-block">
+        <div class="question-number">Question 1</div>
+        <span class="vignette">A patient with a thyroidectomy 4 hours ago develops inspiratory stridor and is leaning forward to breathe. The surgical dressing is dry and intact.</span>
+        <p>Which is the most appropriate nursing intervention?</p>
+        <div class="options-list">
+            <div class="option">A. Place the patient in a supine position to rest the neck muscles.</div>
+            <div class="option">B. Call for the emergency tracheostomy kit and stay with the patient.</div>
+            <div class="option">C. Perform a thorough assessment of the posterior neck for drainage.</div>
+            <div class="option">D. Document the respiratory rate and reassure the patient that swelling is expected.</div>
         </div>
-
-        <div class="item-block">
-            <span class="vignette">During a shift change, the nurse finds an IV bag of Potassium Chloride (KCl) infusing via gravity at a rapid rate, not on a pump as ordered.</span>
-            <div class="scenario">What must the nurse do first?</div>
-            <div class="options">
-                <div class="opt">A. Call the physician to report the error and request a stat ECG.</div>
-                <div class="opt">B. Check the patient's peripheral IV site for infiltration.</div>
-                <div class="opt">C. Stop the infusion immediately using the roller clamp.</div>
-                <div class="opt">D. Document the incident in the hospital’s error-reporting system.</div>
-            </div>
-            <div class="rationale hidden">
-                <span class="key">Key: C</span><br>
-                <span class="trap">Trap: Documentation Trap (D) and Authority Trap (A).</span><br>
-                <span class="filter">Filter: Hold unsafe meds, don’t wait. Stop the harm before reporting it.</span>
-            </div>
-        </div>
-
-        <div class="item-block">
-            <span class="vignette">A patient complains of sudden crushing chest pain and diaphoresis. The ECG shows ST-segment elevation.</span>
-            <div class="scenario">Which action is the nurse's priority?</div>
-            <div class="options">
-                <div class="opt">A. Explain the importance of deep breathing to the patient.</div>
-                <div class="opt">B. Administer oxygen and prescribed sublingual nitroglycerin.</div>
-                <div class="opt">C. Call the laboratory to check the previous troponin level.</div>
-                <div class="opt">D. Wait for the cardiology fellow to arrive before initiating treatment.</div>
-            </div>
-            <div class="rationale hidden">
-                <span class="key">Key: B</span><br>
-                <span class="trap">Trap: Comfort Trap (A) and Wait for Orders (D).</span><br>
-                <span class="filter">Filter: Chest pain = Basic Intervention. Time is muscle; stabilize first.</span>
-            </div>
-        </div>
-
-        <div class="item-block">
-            <span class="vignette">A post-craniotomy patient has a sudden increase in urine output of 500mL in 1 hour and is complaining of extreme thirst.</span>
-            <div class="scenario">What is the safest nursing action?</div>
-            <div class="options">
-                <div class="opt">A. Increase oral fluid intake to match the output.</div>
-                <div class="opt">B. Notify the physician and check urine specific gravity.</div>
-                <div class="opt">C. Document the output and reassess after the next hour.</div>
-                <div class="opt">D. Restrict fluids to prevent further intracranial pressure.</div>
-            </div>
-            <div class="rationale hidden">
-                <span class="key">Key: B</span><br>
-                <span class="trap">Trap: Reassessment Loop (C).</span><br>
-                <span class="filter">Filter: Acute neuro/fluid change = Escalate/Act. Suspected Diabetes Insipidus.</span>
-            </div>
-        </div>
-
-        <div class="item-block">
-            <span class="vignette">A nurse is caring for a patient with suspected Tuberculosis (TB). The patient needs to be transported to the radiology department for a CXR.</span>
-            <div class="scenario">What is the priority action for transport?</div>
-            <div class="options">
-                <div class="opt">A. Put an N95 respirator on the patient during transport.</div>
-                <div class="opt">B. Place a surgical mask on the patient.</div>
-                <div class="opt">C. Cancel the X-ray until the patient is no longer infectious.</div>
-                <div class="opt">D. Notify the radiology staff to wear N95 masks while the patient is in the room.</div>
-            </div>
-            <div class="rationale hidden">
-                <span class="key">Key: B</span><br>
-                <span class="trap">Trap: Overuse of PPE (A) - Patients never wear N95s.</span><br>
-                <span class="filter">Filter: Protocol Mastery. Safety Filter: Contain the source (Surgical mask).</span>
-            </div>
-        </div>
-
-        <div class="item-block">
-            <span class="vignette">A patient with a suspected bowel obstruction has a rigid, tender abdomen and is vomiting greenish fluid.</span>
-            <div class="scenario">What action should the nurse prioritize?</div>
-            <div class="options">
-                <div class="opt">A. Insert a nasogastric (NG) tube and attach to low suction.</div>
-                <div class="opt">B. Provide a light liquid diet to keep the patient hydrated.</div>
-                <div class="opt">C. Administer an oral laxative to clear the obstruction.</div>
-                <div class="opt">D. Assist the patient into a high-Fowler’s position for comfort.</div>
-            </div>
-            <div class="rationale hidden">
-                <span class="key">Key: A</span><br>
-                <span class="trap">Trap: Comfort Trap (D) and Danger Trap (B/C).</span><br>
-                <span class="filter">Filter: Acute Abdomen = Protect (Decompress).</span>
-            </div>
-        </div>
-
-        <div class="item-block">
-            <span class="vignette">An elderly patient receiving aggressive IV fluid resuscitation for sepsis develops crackles in the lung bases and a respiratory rate of 28/min.</span>
-            <div class="scenario">What is the nurse's first response?</div>
-            <div class="options">
-                <div class="opt">A. Document the breath sounds and continue the IV fluids.</div>
-                <div class="opt">B. Slow the IV infusion rate to a "keep-vein-open" (KVO) rate.</div>
-                <div class="opt">C. Administer the next scheduled dose of antibiotics.</div>
-                <div class="opt">D. Provide the patient with an extra pillow for comfort.</div>
-            </div>
-            <div class="rationale hidden">
-                <span class="key">Key: B</span><br>
-                <span class="trap">Trap: Documentation Trap (A) and Comfort Trap (D).</span><br>
-                <span class="filter">Filter: Symptoms > Numbers. Pulmonary edema takes priority over the sepsis fluid protocol.</span>
-            </div>
-        </div>
-
-        <div class="item-block">
-            <span class="vignette">A neonate is born with a heart rate of 90 bpm and gasping respirations.</span>
-            <div class="scenario">What should the nurse do first?</div>
-            <div class="options">
-                <div class="opt">A. Dry and stimulate the infant to cry.</div>
-                <div class="opt">B. Administer blow-by oxygen via tubing.</div>
-                <div class="opt">C. Begin positive pressure ventilation (PPV).</div>
-                <div class="opt">D. Perform a full Apgar score assessment.</div>
-            </div>
-            <div class="rationale hidden">
-                <span class="key">Key: C</span><br>
-                <span class="trap">Trap: Delay (A) and Monitoring Trap (D).</span><br>
-                <span class="filter">Filter: Stability First. HR < 100 in neonate = Vent Support immediately.</span>
-            </div>
-        </div>
-
-        <div class="item-block">
-            <span class="vignette">A diabetic patient is found unresponsive, diaphoretic, and cold to the touch. The glucose monitor is being calibrated and is unavailable.</span>
-            <div class="scenario">What is the priority?</div>
-            <div class="options">
-                <div class="opt">A. Wait for the lab to draw a formal venous glucose level.</div>
-                <div class="opt">B. Administer IV Dextrose 50% immediately.</div>
-                <div class="opt">C. Apply a warm blanket to treat the cold skin.</div>
-                <div class="opt">D. Check the patient's pupils and GCS score.</div>
-            </div>
-            <div class="rationale hidden">
-                <span class="key">Key: B</span><br>
-                <span class="trap">Trap: Diagnosis Trap (A) - waiting for a number.</span><br>
-                <span class="filter">Filter: Symptoms > Numbers. Treat "Deadly Low" (Hypo) rather than wait for proof.</span>
-            </div>
-        </div>
-
-        <div class="item-block">
-            <span class="vignette">A patient with dementia is trying to pull out their central venous catheter. The family refuses the use of any restraints.</span>
-            <div class="scenario">What is the safest nursing action?</div>
-            <div class="options">
-                <div class="opt">A. Comply with the family's wishes and document the risk.</div>
-                <div class="opt">B. Assign a 1:1 sitter to provide constant observation.</div>
-                <div class="opt">C. Administer a heavy sedative to keep the patient still.</div>
-                <div class="opt">D. Tell the family they must take the patient home immediately.</div>
-            </div>
-            <div class="rationale hidden">
-                <span class="key">Key: B</span><br>
-                <span class="trap">Trap: Language Trap (A) - following "family rights" at the cost of safety.</span><br>
-                <span class="filter">Filter: Safety > Debate. Prevent the injury immediately.</span>
-            </div>
-        </div>
-
-        <div class="item-block">
-            <span class="vignette">A patient's abdominal incision eviscerates, with a loop of bowel visible.</span>
-            <div class="scenario">The nurse's immediate action is to:</div>
-            <div class="options">
-                <div class="opt">A. Use a sterile gloved hand to push the bowel back in.</div>
-                <div class="opt">B. Cover the bowel with sterile gauze moistened with normal saline.</div>
-                <div class="opt">C. Leave the room to get an emergency surgical kit.</div>
-                <div class="opt">D. Check the last recorded temperature for signs of infection.</div>
-            </div>
-            <div class="rationale hidden">
-                <span class="key">Key: B</span><br>
-                <span class="trap">Trap: Delay (C) or Danger Action (A).</span><br>
-                <span class="filter">Filter: Protect & Report. Moisten to prevent necrosis.</span>
-            </div>
-          <div class="item-block">
-            <span class="vignette">A patient’s laboratory results show a serum potassium of 6.8 mEq/L. The patient is currently asymptomatic but the ECG monitor shows peaked T-waves.</span>
-            <div class="scenario">Which intervention must the nurse implement first?</div>
-            <div class="options">
-                <div class="opt">A. Repeat the blood draw to rule out lab error or hemolysis.</div>
-                <div class="opt">B. Administer prescribed Calcium Gluconate IV.</div>
-                <div class="opt">C. Encourage the patient to increase oral fluid intake.</div>
-                <div class="opt">D. Document the lab value and notify the dietitian to limit bananas.</div>
-            </div>
-            <div class="rationale hidden">
-                <span class="key">Key: B</span><br>
-                <span class="trap">Trap: Delay (A) and Nutrition focus (D).</span><br>
-                <span class="filter">Filter: Abnormal + Unstable = Intervene. Calcium gluconate protects the heart before the potassium is even lowered.</span>
-            </div>
-        </div>
-
-        <div class="item-block">
-            <span class="vignette">A nurse is assisting a patient with a history of syncope to the bathroom. The patient suddenly becomes pale, sweaty, and says, "I feel like I'm going to pass out."</span>
-            <div class="scenario">What is the priority action?</div>
-            <div class="options">
-                <div class="opt">A. Call for another staff member to bring a wheelchair.</div>
-                <div class="opt">B. Perform an immediate blood glucose check.</div>
-                <div class="opt">C. Ease the patient to the floor and protect their head.</div>
-                <div class="opt">D. Instruct the patient to take slow, deep breaths.</div>
-            </div>
-            <div class="rationale hidden">
-                <span class="key">Key: C</span><br>
-                <span class="trap">Trap: Teaching (D) and Waiting (A).</span><br>
-                <span class="filter">Filter: Prevent fall immediately. Do not leave the patient to find equipment.</span>
-            </div>
-        </div>
-
-        <div class="item-block">
-            <span class="vignette">A patient who is 12 hours post-abdominal surgery is crying and rating their pain as 10/10. The vitals are BP 150/90, HR 110, RR 24.</span>
-            <div class="scenario">What should the nurse do first?</div>
-            <div class="options">
-                <div class="opt">A. Re-assess the pain score using a different scale.</div>
-                <div class="opt">B. Explain that frequent opioid use can lead to constipation.</div>
-                <div class="opt">C. Check the MAR and administer the prescribed analgesic.</div>
-                <div class="opt">D. Wait for the surgeon to round before giving medication.</div>
-            </div>
-            <div class="rationale hidden">
-                <span class="key">Key: C</span><br>
-                <span class="trap">Trap: Over-assessing (A) and Long Explanations (B).</span><br>
-                <span class="filter">Filter: Treat pain if no contraindication. Do not let "education" delay relief.</span>
-            </div>
-        </div>
-
-        <div class="item-block">
-            <span class="vignette">The unit is extremely busy. The RN needs to complete several tasks.</span>
-            <div class="scenario">Which task is most appropriate to delegate to an Unlicensed Assistive Personnel (UAP)?</div>
-            <div class="options">
-                <div class="opt">A. Feeding a patient who had a stroke 2 hours ago.</div>
-                <div class="opt">B. Measuring the output from a Foley catheter.</div>
-                <div class="opt">C. Assessing the skin integrity of a new admission.</div>
-                <div class="opt">D. Providing discharge teaching to a patient with a new ostomy.</div>
-            </div>
-            <div class="rationale hidden">
-                <span class="key">Key: B</span><br>
-                <span class="trap">Trap: Over-delegation (A/C/D).</span><br>
-                <span class="filter">Filter: RN keeps safety-critical actions (Assessment, Teaching, Unstable patients).</span>
-            </div>
-        </div>
-
-        <div class="item-block">
-            <span class="vignette">A patient with a chest tube suddenly develops severe respiratory distress, diminished breath sounds on the affected side, and tracheal deviation.</span>
-            <div class="scenario">What is the priority nursing action?</div>
-            <div class="options">
-                <div class="opt">A. Check the chest tube drainage system for leaks.</div>
-                <div class="opt">B. Notify the physician immediately for a needle decompression.</div>
-                <div class="opt">C. Document the deviation and monitor the SpO2.</div>
-                <div class="opt">D. Clamp the chest tube to see if the symptoms improve.</div>
-            </div>
-            <div class="rationale hidden">
-                <span class="key">Key: B</span><br>
-                <span class="trap">Trap: Documentation (C) and Technical fixation (A).</span><br>
-                <span class="filter">Filter: Airway/Breathing before diagnosis. Tracheal deviation is a late, fatal sign of Tension Pneumothorax.</span>
-            </div>
-        </div>
-
-        <div class="item-block">
-            <span class="vignette">A patient’s heart rate drops to 38 bpm. The patient is dizzy and has a BP of 80/40 mmHg.</span>
-            <div class="scenario">Which action is the nurse's first priority?</div>
-            <div class="options">
-                <div class="opt">A. Start an IV infusion of normal saline.</div>
-                <div class="opt">B. Administer prescribed Atropine IV push.</div>
-                <div class="opt">C. Perform a 12-lead ECG to determine the rhythm.</div>
-                <div class="opt">D. Record the rhythm strip in the patient's chart.</div>
-            </div>
-            <div class="rationale hidden">
-                <span class="key">Key: B</span><br>
-                <span class="trap">Trap: Complexity/Analysis (C) and Documentation (D).</span><br>
-                <span class="filter">Filter: Symptomatic Bradycardia = Act now. Treating the rate is the safety filter.</span>
-            </div>
-        </div>
-
-        <div class="item-block">
-            <span class="vignette">A nurse is calling a physician to report a patient's deteriorating condition.</span>
-            <div class="scenario">To ensure the safest outcome, when should the nurse use the SBAR format?</div>
-            <div class="options">
-                <div class="opt">A. While the patient is actively arresting.</div>
-                <div class="opt">B. After the patient has been stabilized.</div>
-                <div class="opt">C. Before performing any life-saving interventions.</div>
-                <div class="opt">D. Only during routine morning rounds.</div>
-            </div>
-            <div class="rationale hidden">
-                <span class="key">Key: B</span><br>
-                <span class="trap">Trap: Over-reporting (A/C).</span><br>
-                <span class="filter">Filter: Report after stabilizing. Communication never precedes resuscitation in Prometric.</span>
-            </div>
-        </div>
-
-        <div class="item-block">
-            <span class="vignette">A patient begins having a tonic-clonic seizure while sitting in a chair.</span>
-            <div class="scenario">What is the priority action?</div>
-            <div class="options">
-                <div class="opt">A. Insert a padded tongue blade into the patient's mouth.</div>
-                <div class="opt">B. Restrain the patient's arms to prevent injury.</div>
-                <div class="opt">C. Ease the patient to the floor and turn them on their side.</div>
-                <div class="opt">D. Run to the medication room to get Diazepam.</div>
-            </div>
-            <div class="rationale hidden">
-                <span class="key">Key: C</span><br>
-                <span class="trap">Trap: Fear of acting/Leaving (D) and Danger action (A/B).</span><br>
-                <span class="filter">Filter: First safe step counts. Airway protection (side-lying) is the filter.</span>
-            </div>
-        </div>
-
-        <div class="item-block">
-            <span class="vignette">Following a carotid endarterectomy, a patient’s neck circumference is increasing rapidly and they are struggling to breathe.</span>
-            <div class="scenario">The nurse should first:</div>
-            <div class="options">
-                <div class="opt">A. Call the rapid response team.</div>
-                <div class="opt">B. Apply a tight pressure dressing to the neck.</div>
-                <div class="opt">C. Measure the neck with a tape measure for documentation.</div>
-                <div class="opt">D. Offer ice chips to soothe the throat.</div>
-            </div>
-            <div class="rationale hidden">
-                <span class="key">Key: A</span><br>
-                <span class="trap">Trap: Documentation (C) and Danger Action (B - pressure on carotid/trachea is dangerous).</span><br>
-                <span class="filter">Filter: Sudden change = act now. This is a surgical emergency (hematoma).</span>
-            </div>
-        </div>
-
-        <div class="item-block">
-            <p style="text-align:center; font-weight:bold; color:var(--primary);">
-                ... Items 21 to 100 follow the same structural logic provided in the Instructor Fast-Fail Matrix. 
-                Always ensure 1 safe action, 2 delay distractors, and 1 complex unsafe option.
-            </p>
-        </div>
-          <div class="item-block">
-            <span class="vignette">Item 21: A nurse is monitoring a patient in labor receiving an Oxytocin infusion. The electronic fetal monitor shows late decelerations.</span>
-            <div class="scenario">What is the nurse’s priority action?</div>
-            <div class="options">
-                <div class="opt">A. Increase the Oxytocin rate to speed up delivery and resolve the stress.</div>
-                <div class="opt">B. Document the deceleration pattern and reassess after three more contractions.</div>
-                <div class="opt">C. Turn the patient to the left side and discontinue the Oxytocin infusion.</div>
-                <div class="opt">D. Perform a vaginal exam to check for umbilical cord prolapse.</div>
-            </div>
-            <div class="rationale hidden">
-                <span class="key">Key: C</span><br>
-                <span class="trap">Trap: Complex Unsafe (A) and Delay/Reassessment (B).</span><br>
-                <span class="filter">Filter: Abnormal + Unstable = Intervene. Late decels indicate placental insufficiency; stop the stimulus (Oxytocin) first.</span>
-            </div>
-        </div>
-
-        <div class="item-block">
-            <span class="vignette">Item 35: A patient with Type 1 Diabetes is found confused and slurring their speech. The bedside glucose monitor is currently being used by another nurse in a different room.</span>
-            <div class="scenario">What is the safest decision?</div>
-            <div class="options">
-                <div class="opt">A. Give the patient 15g of rapid-acting carbohydrates (juice/glucose gel) immediately.</div>
-                <div class="opt">B. Wait for the other nurse to return with the glucose monitor to confirm the level.</div>
-                <div class="opt">C. Call the lab for a stat venous blood draw to ensure an accurate reading.</div>
-                <div class="opt">D. Administer the patient’s scheduled morning dose of Insulin.</div>
-            </div>
-            <div class="rationale hidden">
-                <span class="key">Key: A</span><br>
-                <span class="trap">Trap: Diagnosis Trap (B/C) - waiting for a number.</span><br>
-                <span class="filter">Filter: Symptoms > Numbers. Treat "Low" immediately if symptoms are present.</span>
-            </div>
-        </div>
-
-        <div class="item-block">
-            <span class="vignette">Item 48: A patient is in the PACU following a thyroidectomy. The nurse notes the patient is making high-pitched, crowing sounds on inspiration.</span>
-            <div class="scenario">Which action should the nurse take first?</div>
-            <div class="options">
-                <div class="opt">A. Check the patient's temperature for signs of malignant hyperthermia.</div>
-                <div class="opt">B. Alert the surgical team and prepare the tracheostomy tray.</div>
-                <div class="opt">C. Re-position the patient to a side-lying position and monitor for 10 minutes.</div>
-                <div class="opt">D. Administer a sedative to help the patient relax and breathe easier.</div>
-            </div>
-            <div class="rationale hidden">
-                <span class="key">Key: B</span><br>
-                <span class="trap">Trap: Delay (C) and Complex Unsafe (D).</span><br>
-                <span class="filter">Filter: Airway before diagnosis. Stridor is a life-threatening emergency.</span>
-            </div>
-        </div>
-
-        <div class="item-block">
-            <span class="vignette">Item 62: An RN is working with a UAP (Assistant) and an LPN (Practical Nurse). The unit has just received a patient with an unstable pulmonary embolism.</span>
-            <div class="scenario">Which task must the RN perform personally?</div>
-            <div class="options">
-                <div class="opt">A. Administering the initial bolus of IV Heparin and assessing breath sounds.</div>
-                <div class="opt">B. Delegating the hourly vital sign checks to the UAP.</div>
-                <div class="opt">C. Asking the LPN to administer the routine oral medications to other patients.</div>
-                <div class="opt">D. Documenting the admission weight provided by the family.</div>
-            </div>
-            <div class="rationale hidden">
-                <span class="key">Key: A</span><br>
-                <span class="trap">Trap: Over-delegation (A is often wrongly delegated in high-stress items).</span><br>
-                <span class="filter">Filter: RN keeps safety-critical actions. Unstable patients = RN only.</span>
-            </div>
-        </div>
-
-        <div class="item-block">
-            <span class="vignette">Item 78: A patient on hemodialysis presents with a heart rate of 115 and tall, tented T-waves on the monitor. The patient has missed two dialysis sessions.</span>
-            <div class="scenario">The nurse's priority action is:</div>
-            <div class="options">
-                <div class="opt">A. Schedule the patient for the next available dialysis slot in the morning.</div>
-                <div class="opt">B. Initiate continuous ECG monitoring and prepare for IV Calcium Gluconate.</div>
-                <div class="opt">C. Document the "tented T-waves" and monitor for chest pain.</div>
-                <div class="opt">D. Administer a dose of oral Furosemide to increase potassium excretion.</div>
-            </div>
-            <div class="rationale hidden">
-                <span class="key">Key: B</span><br>
-                <span class="trap">Trap: Documentation (C) and Delay (A).</span><br>
-                <span class="filter">Filter: Abnormal + Unstable = Intervene. Tented T-waves = Hyperkalemia emergency.</span>
-            </div>
-        </div>
-
-        <div class="item-block">
-            <span class="vignette">Item 94: During a mass casualty incident, the nurse finds a victim who is not breathing. After opening the airway, the victim remains apneic.</span>
-            <div class="scenario">What color tag should the nurse assign?</div>
-            <div class="options">
-                <div class="opt">A. Red (Immediate) - Begin bag-mask ventilation.</div>
-                <div class="opt">B. Black (Deceased/Expectant) - Move to the next victim.</div>
-                <div class="opt">C. Yellow (Delayed) - Monitor for gasping.</div>
-                <div class="opt">D. Green (Minor) - Ask bystanders to perform CPR.</div>
-            </div>
-            <div class="rationale hidden">
-                <span class="key">Key: B</span><br>
-                <span class="trap">Trap: Complexity Trap (A) - in triage, one person cannot be resuscitated at the expense of many.</span><br>
-                <span class="filter">Filter: Fast + Conservative wins. In mass triage, apnea after airway opening = Black tag.</span>
-            </div>
-        </div>
-
-        <div class="item-block">
-            <span class="vignette">Item 100: A patient with a head injury becomes suddenly combative and tries to remove their IV line. The nurse notes the left pupil is now sluggish compared to the right.</span>
-            <div class="scenario">What is the priority intervention?</div>
-            <div class="options">
-                <div class="opt">A. Apply soft wrist restraints to protect the IV site.</div>
-                <div class="opt">B. Notify the physician immediately of the change in neurological status.</div>
-                <div class="opt">C. Document the combative behavior and pupillary response.</div>
-                <div class="opt">D. Re-assess the GCS score in 30 minutes.</div>
-            </div>
-            <div class="rationale hidden">
-                <span class="key">Key: B</span><br>
-                <span class="trap">Trap: Reassessment Loop (D) and Documentation (C).</span><br>
-                <span class="filter">Filter: Acute neuro change = Escalate. Asymmetrical pupils indicate herniation/emergency.</span>
+        <div class="feedback-area">
+            <div class="key-row">ANSWER: B</div>
+            <div class="rationale-text">
+                <span class="trap-tag">Trap: Delay (C) or Comfort (D).</span><br>
+                Stridor indicates an acute airway obstruction. In SCFHS logic, you must act before you document or call for help from a distance. Maintaining the airway is the safety filter.
             </div>
         </div>
     </div>
+
+    <div class="test-block">
+        <div class="question-number">Question 2</div>
+        <span class="vignette">A patient’s heart rate is 145 bpm with a narrow-complex tachycardia on the monitor. The patient is diaphoretic and reports a blood pressure of 78/40 mmHg.</span>
+        <p>What is the priority nursing action?</p>
+        <div class="options-list">
+            <div class="option">A. Prepare for synchronized cardioversion.</div>
+            <div class="option">B. Administer a 500mL bolus of Normal Saline.</div>
+            <div class="option">C. Perform a 12-lead ECG to analyze the rhythm in detail.</div>
+            <div class="option">D. Document the vital signs and re-check in 15 minutes.</div>
+        </div>
+        <div class="feedback-area">
+            <div class="key-row">ANSWER: A</div>
+            <div class="rationale-text">
+                <span class="trap-tag">Trap: Complexity Trap (C) or Monitoring Trap (D).</span><br>
+                Abnormal + Unstable (hypotension) = Immediate Intervention. In Prometric, if the patient is unstable with tachycardia, synchronized cardioversion is the "Safety Filter."
+            </div>
+        </div>
+    </div>
+
+    <div class="test-block">
+        <div class="question-number">Question 3</div>
+        <span class="vignette">During a shift change, the nurse notes that a patient’s IV bag contains Potassium Chloride 40 mEq in 100mL of Saline, which is infusing over 30 minutes.</span>
+        <p>What should the nurse do first?</p>
+        <div class="options-list">
+            <div class="option">A. Notify the physician regarding the medication error.</div>
+            <div class="option">B. Check the patient's most recent serum potassium lab results.</div>
+            <div class="option">C. Stop the infusion immediately and disconnect the tubing.</div>
+            <div class="option">D. Slow the infusion to the prescribed rate and document the error.</div>
+        </div>
+        <div class="feedback-area">
+            <div class="key-row">ANSWER: C</div>
+            <div class="rationale-text">
+                <span class="trap-tag">Trap: Authority Trap (A) or Documentation Trap (D).</span><br>
+                Safety Filter: Hold/Stop unsafe meds immediately. Rapid infusion of concentrated potassium can cause cardiac arrest. You must stop the harm before communicating.
+            </div>
+        </div>
+    </div>
+
+    <div class="test-block">
+        <div class="question-number">Question 4</div>
+        <span class="vignette">A patient who is 1 day post-appendectomy is found with a respiratory rate of 8 breaths/min. The patient is currently receiving Morphine via a PCA pump.</span>
+        <p>Which action should the nurse take first?</p>
+        <div class="options-list">
+            <div class="option">A. Administer oxygen via a non-rebreather mask at 10L/min.</div>
+            <div class="option">B. Stop the PCA pump and attempt to arouse the patient.</div>
+            <div class="option">C. Call the Rapid Response Team and wait for the code cart.</div>
+            <div class="option">D. Check the patient's oxygen saturation with pulse oximetry.</div>
+        </div>
+        <div class="feedback-area">
+            <div class="key-row">ANSWER: B</div>
+            <div class="rationale-text">
+                <span class="trap-tag">Trap: Monitoring Trap (D) - waiting for a number.</span><br>
+                In opioid-induced respiratory depression, the safety filter is to remove the cause (Stop PCA) and stimulate the patient. Oxygen is secondary to stopping the toxin.
+            </div>
+        </div>
+    </div>
+
+    <div class="test-block">
+        <div class="question-number">Question 5</div>
+        <span class="vignette">A patient with a femoral fracture suddenly becomes restless and develops petechiae on the chest and neck. The SpO2 is 88%.</span>
+        <p>Which intervention is the priority?</p>
+        <div class="options-list">
+            <div class="option">A. Elevate the affected extremity and check for a pulse.</div>
+            <div class="option">B. Initiate high-flow oxygen and notify the surgeon.</div>
+            <div class="option">C. Administer the prescribed anticoagulant medication.</div>
+            <div class="option">D. Document the findings and prepare for an X-ray of the femur.</div>
+        </div>
+        <div class="feedback-area">
+            <div class="key-row">ANSWER: B</div>
+            <div class="rationale-text">
+                <span class="trap-tag">Trap: Delay/Documentation (D).</span><br>
+                Petechiae + Respiratory distress after long bone fracture = Fat Embolism. The safety filter is immediate oxygenation.
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Part 1: Nursing Clinical Governance & Safety Filters | Items 1-25</p>
+    </div>
 </div>
 
-<div class="header" style="margin-top:50px; border-top: 3px solid var(--primary); border-bottom: none;">
-    <h3>END OF EXAMINATION</h3>
-    <p>Instructors: Verify "Safe Candidates" by their rejection of "Monitor" and "Document" options in acute scenarios.</p>
-</div>
-
-<script>
-    function toggleAll() {
-        const boxes = document.querySelectorAll('.rationale');
-        boxes.forEach(box => {
-            box.classList.toggle('hidden');
-        });
-    }
-</script>
 </body>
 </html>
