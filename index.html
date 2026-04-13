@@ -350,8 +350,7 @@ const questions = [
         o: ["Wash the skin immediately and initiate the allergy protocol", "Wait for the surgeon to come into the room to see the rash", "Document the rash and describe the edges", "Explain to the patient that they might have an allergy"],
         a: 0, r: "Filter: First safe step counts. Remove the trigger (Safety) immediately."
     }
-    
-    ];
+];
 
 // Dynamically populate to 50 items using the Mapping Logic
 while(questions.length < 50){
@@ -359,7 +358,7 @@ while(questions.length < 50){
     questions.push({
         v: `Vignette #${i}: A high-acuity scenario with a sudden change in patient stability and a choice between immediate intervention and a common trap.`,
         q: `Based on the 'Safety Filter' (Decision Rule) #${i}, what is the priority?`,
-        o: ["Implement immediate safety action (ABCs/Intervention)", "Reassess the patient in 30 minutes (Delay Trap)", "Document the finding in the chart (Doc Trap)", "Explain the procedure to the patient (Comfort Trap)"],
+        o: ["Implement immediate safety action (ABCs/Intervention)", "Reassess the patient in 30 minutes (Delay Trap)", "Document the finding in the chart (Doc Trap)", "Explain the procedure to the patient (Comfort Trap)"]
         a: 0, r: "Filter: Act before documenting. Safety-critical actions cannot be delayed by reassessment or charting."
     });
 }
