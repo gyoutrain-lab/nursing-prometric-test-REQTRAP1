@@ -352,68 +352,88 @@ const questions = [
     }
 ];
 
-// Dynamically populate to 50 items using the Mapping Logic
-while(questions.length < 50){
-    const i = questions.length + 1;
-    questions.push({
-        v: `Vignette #${i}: A high-acuity scenario with a sudden change in patient stability and a choice between immediate intervention and a common trap.`,
-        q: `Based on the 'Safety Filter' (Decision Rule) #${i}, what is the priority?`,
-        o: ["Implement immediate safety action (ABCs/Intervention)", "Reassess the patient in 30 minutes (Delay Trap)", "Document the finding in the chart (Doc Trap)", "Explain the procedure to the patient (Comfort Trap)"]
-        a: 0, r: "Filter: Act before documenting. Safety-critical actions cannot be delayed by reassessment or charting."
-    });
-}
+*** END OF COMPETENCY ASSESSMENT ***<br>
+            Ensure all 50 items are reviewed before final submission.
+        </p>
+    </div>
+    
+    <button class="btn-submit" onclick="analyzePerformance()">SUBMIT FOR CLINICAL EVALUATION</button>
+</div>
 
-function init(){
-    const mount = document.getElementById('quiz-mount');
+<div id="transcript" class="wrapper">
+    <div class="warning-header">
+        <h1 style="color: #000;">PERFORMANCE TRANSCRIPT</h1>
+        <p style="color: #333;">Saudi Commission for Health Specialties | Level 4 Evaluator</p>
+    </div>
+    
+    <div id="meta-data" style="background: #f9f9f9; padding: 20px; border: 1px solid #000; margin-bottom: 30px; font-family: monospace;">
+        </div>
+
+    <div id="analysis-results">
+        </div>
+    
+    <button class="btn-submit" style="background: #000;" onclick="window.print()">PRINT OFFICIAL RECORD</button>
+    <button class="btn-submit" style="background: #444; margin-top: 10px;" onclick="location.reload()">RETAKE SIMULATION</button>
+</div>
+
+<script>
+// Fungsi ini menghubungkan Database Soal dengan UI Transcript
+function analyzePerformance() {
+    const nameInput = document.getElementById('candidate').value;
+    if(!nameInput) {
+        alert("CRITICAL ERROR: Candidate Name is required for legal transcript generation.");
+        return;
+    }
+
+    let rawScore = 0;
+    const totalItems = questions.length;
+    const reviewArea = document.getElementById('analysis-results');
+    reviewArea.innerHTML = '<h3 style="border-bottom: 2px solid #000;">CLINICAL RATIONALE REVIEW</h3>';
+
     questions.forEach((q, index) => {
-        const div = document.createElement('div');
-        div.className = 'q-card';
-        div.innerHTML = `
-            <div class="vignette">${q.v}</div>
-            <span class="question">${index+1}. ${q.q}</span>
-            ${q.o.map((opt, i) => `<label class="opt"><input type="radio" name="q${index}" value="${i}"> ${opt}</label>`).join('')}
-        `;
-        mount.appendChild(div);
-    });
-}
+        const selected = document.querySelector(`input[name="q${index}"]:checked`);
+        const isCorrect = selected && parseInt(selected.value) === q.a;
+        
+        if(isCorrect) rawScore++;
 
-function analyzePerformance(){
-    const name = document.getElementById('candidate').value;
-    if(!name) return alert("System: Identity required for analysis.");
-
-    let score = 0;
-    let trapsHit = 0;
-    const review = document.getElementById('analysis-results');
-    review.innerHTML = '';
-
-    questions.forEach((q, index) => {
-        const sel = document.querySelector(`input[name="q${index}"]:checked`);
-        const isSafe = sel && parseInt(sel.value) === q.a;
-        if(isSafe) score++; else trapsHit++;
-
+        // Membuat Tampilan Review Per Soal (Key & Rationale)
         const row = document.createElement('div');
         row.className = 'result-row';
         row.innerHTML = `
-            <p><strong>Item ${index+1}:</strong> ${isSafe ? '<span class="pass-marker">SAFE ACTION</span>' : '<span class="fail-marker">TRAP TRIGGERED</span>'}</p>
-            <div class="rationale"><strong>Decision Rule:</strong> ${q.r}</div>
+            <p><strong>Item ${index + 1}:</strong> ${q.q}</p>
+            <p>Status: <span class="${isCorrect ? 'pass-marker' : 'fail-marker'}">${isCorrect ? 'SAFE' : 'UNSAFE / TRAPPED'}</span></p>
+            <p><strong>Correct Action:</strong> ${q.o[q.a]}</p>
+            <div class="rationale">
+                <strong>Safety Filter & Rationale:</strong> ${q.r}
+            </div>
         `;
-        review.appendChild(row);
+        reviewArea.appendChild(row);
     });
 
+    // Kalkulasi Skor dan Status
+    const percentage = Math.round((rawScore / totalItems) * 100);
+    const passingScore = 80; // Level 4 requires higher resistance (80%)
+    const isPassed = percentage >= passingScore;
+
+    // Menampilkan Metadata di Transcript
     document.getElementById('exam-view').style.display = 'none';
     document.getElementById('transcript').style.display = 'block';
     
     document.getElementById('meta-data').innerHTML = `
-        <p><strong>CANDIDATE:</strong> ${name.toUpperCase()}</p>
-        <p><strong>ERROR RESISTANCE SCORE:</strong> ${score}/50</p>
-        <p><strong>TRAPS TRIGGERED:</strong> ${trapsHit}</p>
-        <p><strong>INSTRUCTOR STATUS:</strong> ${score >= 45 ? '<span class="pass-marker">SAFE OPERATOR</span>' : '<span class="fail-marker">UNSAFE: HIGH TRAP SENSITIVITY</span>'}</p>
+        <table style="width: 100%; border-collapse: collapse;">
+            <tr><td><strong>CANDIDATE NAME:</strong></td><td>${nameInput.toUpperCase()}</td></tr>
+            <tr><td><strong>TOTAL ITEMS:</strong></td><td>${totalItems}</td></tr>
+            <tr><td><strong>RAW SCORE:</strong></td><td>${rawScore} / ${totalItems}</td></tr>
+            <tr><td><strong>PERCENTAGE:</strong></td><td>${percentage}%</td></tr>
+            <tr><td><strong>PASSING GRADE:</strong></td><td>${passingScore}%</td></tr>
+            <tr><td><strong>FINAL STATUS:</strong></td><td><span class="${isPassed ? 'pass-marker' : 'fail-marker'}">${isPassed ? 'SUCCESSFUL (SAFE)' : 'UNSUCCESSFUL (UNSAFE)'}</span></td></tr>
+        </table>
     `;
     window.scrollTo(0,0);
 }
 
+// Inisialisasi awal saat halaman dimuat
 window.onload = init;
 </script>
-
 </body>
 </html>
